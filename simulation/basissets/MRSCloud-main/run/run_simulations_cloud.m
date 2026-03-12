@@ -209,17 +209,17 @@ for ss = 1:length(subspec)
     RF        = io_writelcmBASIS(basis,outfile,vendor,sequence,metablist,subspec(ss));
     
     % generate plot of metabolite signal from basis set
-    out = fit_plotBasis(basis, ss, 1);
-    saveas(out,fullfile(save_dir,['basis-set' '_' subspecName{ss}]),'pdf');
-    close;
+    % out = fit_plotBasis(basis, ss, 1);
+    % saveas(out,fullfile(save_dir,['basis-set' '_' subspecName{ss}]),'pdf');
+    % close;
 end
 
 % % create a basis set in .mat for Osprey
-addMMFlag       = 0;
-delete([save_dir,'/BASIS_*']); % Remove the previous BASIS with MMFlag off
-[basis]         = fit_makeBasis_MRSCloud(save_dir, addMMFlag, sequence, editTarget, TE, localization, vendor);
+% addMMFlag       = 0;
+% delete([save_dir,'/BASIS_*']); % Remove the previous BASIS with MMFlag off
+% [basis]         = fit_makeBasis_MRSCloud(save_dir, addMMFlag, sequence, editTarget, TE, localization, vendor);
 % 
 % % zip outputfile
-zipname = outputFile;
-zip(zipname,save_dir);
+% zipname = outputFile;
+% zip(zipname,save_dir);
 end % end of the function

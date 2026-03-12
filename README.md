@@ -163,10 +163,8 @@ This MRS Digital Brain Phantom is a never-ending project! We are happy to receiv
 ## Citation
 Should you publish any material that made use of this MRS Phantom Framework, please cite the following paper:
 
-*Preprint (currently under review)*:
-
 [D.M.J. van de Sande, A.T. Gudmundson, S. Murali-Manohar, C.W. Davies-Jenkins, D. Simicic, G. Simegn, İ. Özdemir, S. Amirrajab, J.P. Merkofer, H.J. Zöllner, G. Oeltzschner, R.A.E. Edden A Digital Phantom for MR Spectroscopy Data Simulation.
-](https://arxiv.org/abs/2412.15869)
+](https://doi.org/10.1002/mrm.70138)
 
 
 ## License

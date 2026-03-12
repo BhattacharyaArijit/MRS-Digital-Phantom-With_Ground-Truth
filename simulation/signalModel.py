@@ -68,7 +68,7 @@ class SignalModel:
             self.log("Using provided B0 map for shim imperfections...")
             self.shim_map = torch.tensor(B0_map, dtype=torch.float32)
             # Optional plot
-            plot_b0_map_process(voi_labels, B0_map, show=True)
+            # plot_b0_map_process(voi_labels, B0_map, show=True)
         else:
             self.log("⚠️ No B0 map provided, simulating shim imperfections...")
             self.shim_map = self.simulate_shim_map(voi_labels)
@@ -97,7 +97,6 @@ class SignalModel:
                 label: float(tissue_fractions[i])
                 for i, label in enumerate(self.labels)     # NEW: store tissue fractions used in the voxel mixture model
             }
-                
                 
 
         # ---- Macromolecule signal ---- #
@@ -130,49 +129,6 @@ class SignalModel:
         spec_water *= voxel_volume  # Scale by voxel volume
         spec_water = spec_water.sum((0, 1, 2))  # Sum over the VOI dimensions
         spec += spec_water
-         
-
-        # New: WATER NORMALIZATION (optional, controlled via config) 
-
-        if self.simulation_params.get("normalize_to_water", False):
-
-            self.log("Normalizing to water peak area...")
-
-            # --- compute water peak area ---
-            water_area = torch.sum(torch.abs(spec_water))
-
-            # --- compute voxel water concentration ---
-            water_conc = 0.0
-            for tissue, frac in self.voxel_tissue_fractions.items():
-                water_conc += frac * H2O_CONCENTRATIONS[tissue]
-
-            # --- optional proton correction ---
-            if self.simulation_params.get("use_proton_correction", False):
-                self.log("Applying proton-density correction...")
-
-                # water has 2 protons
-                water_protons = 2.0
-
-                # reference metabolite proton scaling
-                # assumes basis already normalized per proton
-                proton_scale = 1.0 / water_protons
-            else:
-                proton_scale = 1.0
-
-            # --- compute scale factor ---
-            scale = (water_conc * proton_scale) / water_area
-
-            # --- apply scaling to all components ---
-            spec *= scale
-            spec_metabs *= scale
-            spec_mms *= scale
-            spec_lipids *= scale
-            spec_water *= scale
-            self.log(f"Water area before scaling: {water_area}")
-            self.log(f"Voxel water conc: {water_conc}")
-            self.log(f"Scaling factor: {scale}")
-
-
 
         # ---- Add Noise ---- #
         self.log("Simulating noise...")
@@ -203,15 +159,15 @@ class SignalModel:
         f = torch.tensor(self.basis.f[torch.newaxis, :, torch.newaxis])  # (1, N, 1)
 
         # # Creatine index for peak area estimation
-        cr_idx = self.basis.names.index('Cr')   
-        # # Extract creatine spectrum from basis set
-        cr_fid = fids[0,:,cr_idx]
-        cr_spec = torch.fft.fftshift(torch.fft.fft(cr_fid, dim=0), dim=0)
-        # # Find the methyl peak area (-CH3 group with 3 protons, ~ 3.0 ppm)
-        ch3_spec = cr_spec[(self.basis.ppm > 2.9) & (self.basis.ppm < 3.2)]
-        ppm_axis = self.basis.ppm[(self.basis.ppm > 2.9) & (self.basis.ppm < 3.2)]
-        ch3_area = simpson(ch3_spec.real, x=ppm_axis)
-        one_proton_area = ch3_area / 3.0  # Area under the curve for one proton
+        # cr_idx = self.basis.names.index('Cr')   
+        # # # Extract creatine spectrum from basis set
+        # cr_fid = fids[0,:,cr_idx]
+        # cr_spec = torch.fft.fftshift(torch.fft.fft(cr_fid, dim=0), dim=0)
+        # # # Find the methyl peak area (-CH3 group with 3 protons, ~ 3.0 ppm)
+        # ch3_spec = cr_spec[(self.basis.ppm > 2.9) & (self.basis.ppm < 3.2)]
+        # ppm_axis = self.basis.ppm[(self.basis.ppm > 2.9) & (self.basis.ppm < 3.2)]
+        # ch3_area = simpson(ch3_spec.real, x=ppm_axis)
+        # one_proton_area = ch3_area / 3.0  # Area under the curve for one proton
 
         # Extract metabolite concentrations for the given labels
         metab_specs = []
@@ -418,7 +374,7 @@ class SignalModel:
         final_map[background_mask] = 0.0
 
         # Optional plot
-        plot_shim_map_process(label_map, base, boundary_ampl, final_map, show=True)
+        # plot_shim_map_process(label_map, base, boundary_ampl, final_map, show=True)
 
         return torch.tensor(final_map)
 

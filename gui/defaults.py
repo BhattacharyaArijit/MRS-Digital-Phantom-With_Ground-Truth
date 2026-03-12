@@ -15,17 +15,15 @@ DEFAULT_BASIS_SET_DIR = "./data/basissets/"
 # "NAA_Aspartate_only" - NAA Aspartate -- Not needed for simulation
 # "NAA_Acetyl_only" - NAA Acetyl -- Not needed for simulation
 
-DEFAULT_METABOLITES_RAW = ['H2O', 'Tau', 'Scyllo', 'Gln', 'Gly', 'bHB', 'PCh', 'bHG', 'Lac', 'NAA', 'GPC', 
+DEFAULT_METABOLITES = ['H2O', 'Tau', 'Scyllo', 'Gln', 'Gly', 'bHB', 'PCh', 'bHG', 'Lac', 'NAA', 'GPC', 
                        'GSH', 'Cit', 'Asc', 'GABA', 'Thr', 'EtOH', 'NAAG', 'Asp', 'Cr', 'Phenyl', 'Ser', 
                        'Ref0ppm', 'EA', 'Ala', 'PCr', 'Glc', 'Ins', 'PE', 'Glu', 'Val', 'Tyros']
-
-DEFAULT_METABOLITES = [str(m) for m in DEFAULT_METABOLITES_RAW]
 
 # skeleton options
 DEFAULT_SKELETON = "MRiLab"
 
 # simulation defaults
-DEFAULT_ECHO_TIME_MS = 30
+DEFAULT_ECHO_TIME_MS = 35
 DEFAULT_SPECTRAL_POINTS = 2048
 DEFAULT_REPETITION_TIME_MS = 2000
 DEFAULT_NOISE_LEVEL = 5.0
@@ -70,6 +68,6 @@ DEFAULT_SIM_PARAMS = {
             "shim_boundary_smoothing": DEFAULT_SHIM_BOUNDARY_SMOOTHING,
             "water_amp_factor": DEFAULT_WATER_AMP_FACTOR,
             "TE": DEFAULT_ECHO_TIME_MS,
-            "vendor": "Siemens",
+            "vendor": "Philips",
             "localization": "PRESS",
         }
